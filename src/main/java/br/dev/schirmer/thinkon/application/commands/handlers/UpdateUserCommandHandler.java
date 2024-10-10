@@ -8,6 +8,7 @@ import br.dev.schirmer.thinkon.domain.entities.User;
 import br.dev.schirmer.thinkon.domain.exceptions.DomainNotificationException;
 import br.dev.schirmer.thinkon.domain.exceptions.Notification;
 import br.dev.schirmer.thinkon.domain.valueobjects.Email;
+import br.dev.schirmer.thinkon.domain.valueobjects.Name;
 import br.dev.schirmer.thinkon.domain.valueobjects.PhoneNumber;
 import br.dev.schirmer.thinkon.infrastructure.exceptions.InfrastructureNotificationException;
 import br.dev.schirmer.thinkon.infrastructure.repositories.UserRepositoryImpl;
@@ -32,10 +33,10 @@ public class UpdateUserCommandHandler implements Handler<UserResponseDTO, Update
             throw new ApplicationNotificationException(Collections.singletonList(new Notification("id", "User not found.")));
         }
         if (request.firstName() != null) {
-            user.setFirstName(request.firstName());
+            user.setFirstName(new Name(request.firstName()));
         }
         if (request.lastName() != null) {
-            user.setLastName(request.lastName());
+            user.setLastName(new Name(request.lastName()));
         }
         if (request.email() != null) {
             user.setEmail(new Email(request.email()));
@@ -47,8 +48,8 @@ public class UpdateUserCommandHandler implements Handler<UserResponseDTO, Update
         return new UserResponseDTO(
                 user.getId(),
                 user.getUsername(),
-                user.getFirstName(),
-                user.getLastName(),
+                user.getFirstName().value(),
+                user.getLastName().value(),
                 user.getEmail().value(),
                 user.getPhoneNumber().value()
         );

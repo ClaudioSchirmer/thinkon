@@ -9,12 +9,13 @@ public record PhoneNumber(String value) implements ValueObject<String> {
     private static final String CANADIAN_PHONE_NUMBER_REGEX = "\\+1\\d{3}\\d{3}\\d{4}";
     private static final Pattern PATTERN = Pattern.compile(CANADIAN_PHONE_NUMBER_REGEX);
 
-    public void validate(Boolean required, List<Notification> notifications) {
+    @Override
+    public void validate(Boolean required, String fieldName, List<Notification> notifications) {
         if (required && value == null) {
             notifications.add(
                     new Notification(
-                            "phoneNumber",
-                            "phoneNumber is required."
+                            fieldName,
+                            fieldName + " is required."
                     )
             );
             return;
@@ -22,8 +23,8 @@ public record PhoneNumber(String value) implements ValueObject<String> {
         if (!PATTERN.matcher(value).matches()) {
             notifications.add(
                     new Notification(
-                            "phoneNumber",
-                            "Invalid phone number."
+                            fieldName,
+                            "Invalid value."
                     )
             );
         }

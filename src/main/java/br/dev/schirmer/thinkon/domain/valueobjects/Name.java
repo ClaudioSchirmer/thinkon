@@ -5,9 +5,9 @@ import br.dev.schirmer.thinkon.domain.exceptions.Notification;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public record Email(String value) implements ValueObject<String> {
-    private static final String EMAIL_REGEX = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$";
-    private static final Pattern PATTERN = Pattern.compile(EMAIL_REGEX, Pattern.CASE_INSENSITIVE);
+public record Name(String value) implements ValueObject<String> {
+    private static final String NAME_REGEX = "^.{4,}$";
+    private static final Pattern PATTERN = Pattern.compile(NAME_REGEX, Pattern.CASE_INSENSITIVE);
 
     @Override
     public void validate(Boolean required, String fieldName, List<Notification> notifications) {
@@ -24,7 +24,7 @@ public record Email(String value) implements ValueObject<String> {
             notifications.add(
                     new Notification(
                             fieldName,
-                            "Invalid value."
+                            "Input should be at least 4 characters long."
                     )
             );
         }

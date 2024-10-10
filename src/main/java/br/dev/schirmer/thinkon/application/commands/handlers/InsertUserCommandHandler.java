@@ -32,8 +32,8 @@ public class InsertUserCommandHandler implements Handler<UserResponseDTO, Insert
         return new UserResponseDTO(
                 userRepositoryImpl.insertUser(insertable),
                 user.getUsername(),
-                user.getFirstName(),
-                user.getLastName(),
+                user.getFirstName().value(),
+                user.getLastName().value(),
                 user.getEmail().value(),
                 user.getPhoneNumber().value()
         );

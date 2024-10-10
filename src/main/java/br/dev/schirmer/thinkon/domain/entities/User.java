@@ -4,6 +4,7 @@ import br.dev.schirmer.thinkon.domain.ValidEntity;
 import br.dev.schirmer.thinkon.domain.exceptions.DomainNotificationException;
 import br.dev.schirmer.thinkon.domain.exceptions.Notification;
 import br.dev.schirmer.thinkon.domain.valueobjects.Email;
+import br.dev.schirmer.thinkon.domain.valueobjects.Name;
 import br.dev.schirmer.thinkon.domain.valueobjects.PhoneNumber;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -19,8 +20,8 @@ public class User {
     private final UUID id;
     private final List<Notification> notifications = new ArrayList<>();
 
-    private String firstName;
-    private String lastName;
+    private Name firstName;
+    private Name lastName;
     private Email email;
     private PhoneNumber phoneNumber;
 
@@ -31,8 +32,8 @@ public class User {
             String phoneNumber
     ) {
         this.id = null;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.firstName = new Name(firstName);
+        this.lastName = new Name(lastName);
         this.phoneNumber = new PhoneNumber(phoneNumber);
         this.email = new Email(email);
     }
@@ -45,8 +46,8 @@ public class User {
             String phoneNumber
     ) {
         this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.firstName = new Name(firstName);
+        this.lastName = new Name(lastName);
         this.phoneNumber = new PhoneNumber(phoneNumber);
         this.email = new Email(email);
     }
@@ -71,11 +72,10 @@ public class User {
     }
 
     private void checkAndThrow() throws DomainNotificationException {
-        addNullNotification(firstName, "firstName");
-        addNullNotification(lastName, "lastName");
-        addNullNotification(phoneNumber, "phoneNumber");
-        email.validate(true, notifications);
-        phoneNumber.validate(true, notifications);
+        firstName.validate(true, "firstName", notifications);
+        lastName.validate(true, "lastName", notifications);
+        email.validate(true, "email", notifications);
+        phoneNumber.validate(true, "phoneNumber", notifications);
         if (!notifications.isEmpty()) {
             throw new DomainNotificationException(notifications);
         }

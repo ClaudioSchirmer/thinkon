@@ -30,8 +30,8 @@ public class UserRepositoryImpl implements UserRepository {
             UserTable saved = userJpaRepository.save(
                     new UserTable(
                             null,
-                            entity.getFirstName(),
-                            entity.getLastName(),
+                            entity.getFirstName().value(),
+                            entity.getLastName().value(),
                             entity.getEmail().value(),
                             entity.getPhoneNumber().value()
                     )
@@ -75,8 +75,8 @@ public class UserRepositoryImpl implements UserRepository {
         try {
             UserTable userTable = new UserTable(
                     user.entity().getId(),
-                    user.entity().getFirstName(),
-                    user.entity().getLastName(),
+                    user.entity().getFirstName().value(),
+                    user.entity().getLastName().value(),
                     user.entity().getEmail().value(),
                     user.entity().getPhoneNumber().value()
             );
