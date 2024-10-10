@@ -30,7 +30,7 @@ public class Pipeline {
             return new Result.Failure(e.getNotifications());
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            return new Result.ExceptionResult(e);
+            return new Result.Exception(e);
         }
     }
 

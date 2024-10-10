@@ -42,8 +42,8 @@ public class UserController {
             case Result.Failure failureResult -> {
                 return ResponseEntity.badRequest().body(new BadRequestResult(failureResult.notifications()));
             }
-            case Result.ExceptionResult exceptionResult -> {
-                log.error(exceptionResult.exception().toString(), exceptionResult.exception());
+            case Result.Exception exception -> {
+                log.error(exception.exception().toString(), exception.exception());
                 return ResponseEntity.internalServerError().body("Internal Server Error");
             }
         }
@@ -60,8 +60,8 @@ public class UserController {
             case Result.Failure failureResult -> {
                 return ResponseEntity.badRequest().body(new BadRequestResult(failureResult.notifications()));
             }
-            case Result.ExceptionResult exceptionResult -> {
-                log.error(exceptionResult.exception().toString(), exceptionResult.exception());
+            case Result.Exception exception -> {
+                log.error(exception.exception().toString(), exception.exception());
                 return ResponseEntity.internalServerError().body("Internal Server Error");
             }
         }
@@ -81,8 +81,8 @@ public class UserController {
             case Result.Failure failureResult -> {
                 return ResponseEntity.badRequest().body(new BadRequestResult(failureResult.notifications()));
             }
-            case Result.ExceptionResult exceptionResult -> {
-                log.error(exceptionResult.exception().toString(), exceptionResult.exception());
+            case Result.Exception exception -> {
+                log.error(exception.exception().toString(), exception.exception());
                 return ResponseEntity.internalServerError().body("Internal Server Error");
             }
         }
@@ -102,8 +102,8 @@ public class UserController {
                 }
                 return ResponseEntity.badRequest().body(new BadRequestResult(failureResult.notifications()));
             }
-            case Result.ExceptionResult exceptionResult -> {
-                log.error(exceptionResult.exception().toString(), exceptionResult.exception());
+            case Result.Exception exception -> {
+                log.error(exception.exception().toString(), exception.exception());
                 return ResponseEntity.internalServerError().body("Internal Server Error");
             }
         }
@@ -130,8 +130,8 @@ public class UserController {
                 }
                 return ResponseEntity.badRequest().body(new BadRequestResult(failureResult.notifications()));
             }
-            case Result.ExceptionResult exceptionResult -> {
-                log.error(exceptionResult.exception().toString(), exceptionResult.exception());
+            case Result.Exception exception -> {
+                log.error(exception.exception().toString(), exception.exception());
                 return ResponseEntity.internalServerError().body("Internal Server Error");
             }
         }
