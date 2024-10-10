@@ -3,6 +3,7 @@ package br.dev.schirmer.thinkon.application.exceptions;
 import br.dev.schirmer.thinkon.domain.exceptions.Notification;
 import lombok.Getter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -12,6 +13,11 @@ public class ApplicationNotificationException extends Exception {
     public ApplicationNotificationException(List<Notification> notifications) {
         super();
         this.notifications = notifications;
+    }
+
+    public ApplicationNotificationException() {
+        super();
+        this.notifications = null;
     }
 
 }

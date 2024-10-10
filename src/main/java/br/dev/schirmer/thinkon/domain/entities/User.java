@@ -53,7 +53,7 @@ public class User {
     }
 
     public String getUsername() {
-        return firstName + " " + lastName;
+        return firstName.value() + " " + lastName.value();
     }
 
     public ValidEntity.Insertable<User> getInsertable() throws DomainNotificationException {

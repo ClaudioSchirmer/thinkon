@@ -35,28 +35,78 @@ public class UserController {
     @Operation(summary = "Insert", description = "This endpoint allows the insertion of new users.")
     public ResponseEntity<?> insertUser(@RequestBody InsertUserCommand insertUserCommand) {
         Result<?> result = pipeline.dispatch(insertUserCommand);
-        return getResponse(result, HttpStatus.CREATED, HttpStatus.CREATED);
+        switch (result) {
+            case Result.Success<?> successResult -> {
+                return ResponseEntity.status(HttpStatus.CREATED).body(new SuccessResult<>(successResult.value()));
+            }
+            case Result.Failure failureResult -> {
+                return ResponseEntity.badRequest().body(new BadRequestResult(failureResult.notifications()));
+            }
+            case Result.ExceptionResult exceptionResult -> {
+                log.error(exceptionResult.exception().toString(), exceptionResult.exception());
+                return ResponseEntity.internalServerError().body("Internal Server Error");
+            }
+        }
     }
 
     @GetMapping
     @Operation(summary = "Find", description = "This endpoint allows you to retrieve all users.")
     public ResponseEntity<?> getAllUsers() {
         Result<?> result = pipeline.dispatch(new FindUserQuery());
-        return getResponse(result, HttpStatus.OK, HttpStatus.OK);
+        switch (result) {
+            case Result.Success<?> successResult -> {
+                return ResponseEntity.ok().body(new SuccessResult<>(successResult.value()));
+            }
+            case Result.Failure failureResult -> {
+                return ResponseEntity.badRequest().body(new BadRequestResult(failureResult.notifications()));
+            }
+            case Result.ExceptionResult exceptionResult -> {
+                log.error(exceptionResult.exception().toString(), exceptionResult.exception());
+                return ResponseEntity.internalServerError().body("Internal Server Error");
+            }
+        }
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Find By Id", description = "This endpoint allows you to retrieve a user by ID.")
     public ResponseEntity<?> getUserById(@PathVariable("id") UUID uuid) {
         Result<?> result = pipeline.dispatch(new FindUserByIdQuery(uuid));
-        return getResponse(result, HttpStatus.OK, HttpStatus.NOT_FOUND);
+        switch (result) {
+            case Result.Success<?> successResult -> {
+                if (successResult.value() == null) {
+                    return ResponseEntity.notFound().build();
+                }
+                return ResponseEntity.ok().body(new SuccessResult<>(successResult.value()));
+            }
+            case Result.Failure failureResult -> {
+                return ResponseEntity.badRequest().body(new BadRequestResult(failureResult.notifications()));
+            }
+            case Result.ExceptionResult exceptionResult -> {
+                log.error(exceptionResult.exception().toString(), exceptionResult.exception());
+                return ResponseEntity.internalServerError().body("Internal Server Error");
+            }
+        }
     }
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete By Id", description = "This endpoint allows you to delete a user by ID.")
     public ResponseEntity<?> deleteById(@PathVariable("id") UUID uuid) {
         Result<?> result = pipeline.dispatch(new DeleteUserCommand(uuid));
-        return getResponse(result, HttpStatus.NO_CONTENT, HttpStatus.NO_CONTENT);
+        switch (result) {
+            case Result.Success<?> successResult -> {
+                return ResponseEntity.noContent().build();
+            }
+            case Result.Failure failureResult -> {
+                if (failureResult.notifications() == null) {
+                    return ResponseEntity.notFound().build();
+                }
+                return ResponseEntity.badRequest().body(new BadRequestResult(failureResult.notifications()));
+            }
+            case Result.ExceptionResult exceptionResult -> {
+                log.error(exceptionResult.exception().toString(), exceptionResult.exception());
+                return ResponseEntity.internalServerError().body("Internal Server Error");
+            }
+        }
     }
 
     @PutMapping("/{id}")
@@ -70,22 +120,17 @@ public class UserController {
                 userRequestDTO.phoneNumber()
         );
         Result<?> result = pipeline.dispatch(updateUserCommand);
-        return getResponse(result, HttpStatus.OK, HttpStatus.OK);
-    }
-
-    private ResponseEntity<?> getResponse(Result<?> result, HttpStatus successWithBody, HttpStatus successWithoutBody) {
         switch (result) {
             case Result.Success<?> successResult -> {
-                if (successResult.value() != null) {
-                    return ResponseEntity.status(successWithBody).body(new SuccessResult<>(successResult.value()));
-                }
-                return ResponseEntity.status(successWithoutBody).build();
+                return ResponseEntity.ok().body(new SuccessResult<>(successResult.value()));
             }
             case Result.Failure failureResult -> {
+                if (failureResult.notifications() == null) {
+                    return ResponseEntity.notFound().build();
+                }
                 return ResponseEntity.badRequest().body(new BadRequestResult(failureResult.notifications()));
             }
             case Result.ExceptionResult exceptionResult -> {
-                // Do not expose internal errors to the client.
                 log.error(exceptionResult.exception().toString(), exceptionResult.exception());
                 return ResponseEntity.internalServerError().body("Internal Server Error");
             }

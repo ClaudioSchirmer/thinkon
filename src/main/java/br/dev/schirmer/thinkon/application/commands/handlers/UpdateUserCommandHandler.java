@@ -6,7 +6,6 @@ import br.dev.schirmer.thinkon.application.exceptions.ApplicationNotificationExc
 import br.dev.schirmer.thinkon.application.pipeline.Handler;
 import br.dev.schirmer.thinkon.domain.entities.User;
 import br.dev.schirmer.thinkon.domain.exceptions.DomainNotificationException;
-import br.dev.schirmer.thinkon.domain.exceptions.Notification;
 import br.dev.schirmer.thinkon.domain.valueobjects.Email;
 import br.dev.schirmer.thinkon.domain.valueobjects.Name;
 import br.dev.schirmer.thinkon.domain.valueobjects.PhoneNumber;
@@ -14,8 +13,6 @@ import br.dev.schirmer.thinkon.infrastructure.exceptions.InfrastructureNotificat
 import br.dev.schirmer.thinkon.infrastructure.repositories.UserRepositoryImpl;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
-
-import java.util.Collections;
 
 @Service
 @Lazy
@@ -30,7 +27,7 @@ public class UpdateUserCommandHandler implements Handler<UserResponseDTO, Update
     public UserResponseDTO invoke(UpdateUserCommand request) throws DomainNotificationException, InfrastructureNotificationException, ApplicationNotificationException {
         User user = userRepositoryImpl.findById(request.uuid());
         if (user == null) {
-            throw new ApplicationNotificationException(Collections.singletonList(new Notification("id", "User not found.")));
+            throw new ApplicationNotificationException();
         }
         if (request.firstName() != null) {
             user.setFirstName(new Name(request.firstName()));

@@ -6,12 +6,9 @@ import br.dev.schirmer.thinkon.application.pipeline.Handler;
 import br.dev.schirmer.thinkon.domain.entities.User;
 import br.dev.schirmer.thinkon.domain.entities.UserRepository;
 import br.dev.schirmer.thinkon.domain.exceptions.DomainNotificationException;
-import br.dev.schirmer.thinkon.domain.exceptions.Notification;
 import br.dev.schirmer.thinkon.infrastructure.exceptions.InfrastructureNotificationException;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
-
-import java.util.Collections;
 
 @Service
 @Lazy
@@ -26,7 +23,7 @@ public class DeleteUserCommandHandler implements Handler<Void, DeleteUserCommand
     public Void invoke(DeleteUserCommand request) throws DomainNotificationException, InfrastructureNotificationException, ApplicationNotificationException {
         User user = userRepository.findById(request.uuid());
         if (user == null) {
-            throw new ApplicationNotificationException(Collections.singletonList(new Notification("id", "User not found.")));
+            throw new ApplicationNotificationException();
         }
         userRepository.delete(user.getDeletable());
         return null;
