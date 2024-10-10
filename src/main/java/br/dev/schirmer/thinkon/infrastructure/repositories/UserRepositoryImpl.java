@@ -39,7 +39,7 @@ public class UserRepositoryImpl implements UserRepository {
             return saved.getId();
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            throw new InfrastructureNotificationException(Collections.singletonList(new Notification("", "Unknown error when trying to insert an user.")));
+            throw new InfrastructureNotificationException(Collections.singletonList(new Notification("", "Unknown error when trying to insert a user.")));
         }
     }
 
@@ -61,7 +61,7 @@ public class UserRepositoryImpl implements UserRepository {
             return null;
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            throw new InfrastructureNotificationException(Collections.singletonList(new Notification("", "Unknown error when trying to find an user.")));
+            throw new InfrastructureNotificationException(Collections.singletonList(new Notification("", "Unknown error when trying to find a user.")));
         }
     }
 
@@ -83,7 +83,7 @@ public class UserRepositoryImpl implements UserRepository {
             userJpaRepository.save(userTable);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            throw new InfrastructureNotificationException(Collections.singletonList(new Notification("", "Unknown error when trying to update an user.")));
+            throw new InfrastructureNotificationException(Collections.singletonList(new Notification("", "Unknown error when trying to update a user.")));
         }
     }
 }
