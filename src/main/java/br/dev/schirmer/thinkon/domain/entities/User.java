@@ -6,7 +6,6 @@ import br.dev.schirmer.thinkon.domain.exceptions.Notification;
 import br.dev.schirmer.thinkon.domain.valueobjects.Email;
 import br.dev.schirmer.thinkon.domain.valueobjects.Name;
 import br.dev.schirmer.thinkon.domain.valueobjects.PhoneNumber;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -78,17 +77,6 @@ public class User {
         phoneNumber.validate(true, "phoneNumber", notifications);
         if (!notifications.isEmpty()) {
             throw new DomainNotificationException(notifications);
-        }
-    }
-
-    private void addNullNotification(Object value, String fieldName) {
-        if (value == null) {
-            notifications.add(
-                    new Notification(
-                            fieldName,
-                            fieldName + " is required."
-                    )
-            );
         }
     }
 }
