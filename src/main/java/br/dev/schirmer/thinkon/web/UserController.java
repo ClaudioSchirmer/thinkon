@@ -32,21 +32,21 @@ public class UserController {
     }
 
     @PostMapping
-    @Operation(summary = "Insert", description = "This endpoint allows the insertion of new users into the system.")
+    @Operation(summary = "Insert", description = "This endpoint allows the insertion of new users.")
     public ResponseEntity<?> insertUser(@RequestBody InsertUserCommand insertUserCommand) {
         Result<?> result = pipeline.dispatch(insertUserCommand);
         return getResponse(result, HttpStatus.CREATED, HttpStatus.CREATED);
     }
 
     @GetMapping
-    @Operation(summary = "Find", description = "This endpoint allows you to retrieve all users from the system.")
+    @Operation(summary = "Find", description = "This endpoint allows you to retrieve all users.")
     public ResponseEntity<?> getAllUsers() {
         Result<?> result = pipeline.dispatch(new FindUserQuery());
         return getResponse(result, HttpStatus.OK, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Find By Id", description = "This endpoint allows you to retrieve a user by ID from the system.")
+    @Operation(summary = "Find By Id", description = "This endpoint allows you to retrieve a user by ID.")
     public ResponseEntity<?> getUserById(@PathVariable("id") UUID uuid) {
         Result<?> result = pipeline.dispatch(new FindUserByIdQuery(uuid));
         return getResponse(result, HttpStatus.OK, HttpStatus.NOT_FOUND);
