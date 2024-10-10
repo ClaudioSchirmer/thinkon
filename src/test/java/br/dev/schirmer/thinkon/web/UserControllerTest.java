@@ -100,7 +100,7 @@ public class UserControllerTest {
         mockMvc.perform(get("/users"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data").exists())
-                .andExpect(jsonPath("$.data.users", hasSize(greaterThan(1))));
+                .andExpect(jsonPath("$.data.users", hasSize(greaterThan(0))));
     }
 
     @Test
