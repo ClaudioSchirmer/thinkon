@@ -5,8 +5,7 @@ import br.dev.schirmer.thinkon.application.dtos.UserResponseDTO;
 import br.dev.schirmer.thinkon.application.pipeline.Handler;
 import br.dev.schirmer.thinkon.domain.ValidEntity;
 import br.dev.schirmer.thinkon.domain.entities.User;
-import br.dev.schirmer.thinkon.domain.exceptions.DomainNotificationException;
-import br.dev.schirmer.thinkon.infrastructure.exceptions.InfrastructureNotificationException;
+import br.dev.schirmer.thinkon.domain.exceptions.NotificationException;
 import br.dev.schirmer.thinkon.infrastructure.repositories.UserRepositoryImpl;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -21,7 +20,7 @@ public class InsertUserCommandHandler implements Handler<UserResponseDTO, Insert
     }
 
     @Override
-    public UserResponseDTO invoke(InsertUserCommand command) throws DomainNotificationException, InfrastructureNotificationException {
+    public UserResponseDTO invoke(InsertUserCommand command) throws NotificationException {
         User user = new User(
                 command.firstName(),
                 command.lastName(),

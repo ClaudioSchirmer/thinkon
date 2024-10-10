@@ -33,7 +33,13 @@ public class UserController {
 
     @PostMapping
     @Operation(summary = "Insert", description = "This endpoint allows the insertion of new users.")
-    public ResponseEntity<?> insertUser(@RequestBody InsertUserCommand insertUserCommand) {
+    public ResponseEntity<?> insertUser(@RequestBody UserRequestDTO userRequestDTO) {
+        InsertUserCommand insertUserCommand = new InsertUserCommand(
+                userRequestDTO.firstName(),
+                userRequestDTO.lastName(),
+                userRequestDTO.email(),
+                userRequestDTO.phoneNumber()
+        );
         Result<?> result = pipeline.dispatch(insertUserCommand);
         switch (result) {
             case Result.Success<?> successResult -> {

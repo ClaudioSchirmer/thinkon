@@ -3,6 +3,7 @@ package br.dev.schirmer.thinkon.domain.entities;
 import br.dev.schirmer.thinkon.domain.ValidEntity;
 import br.dev.schirmer.thinkon.domain.exceptions.DomainNotificationException;
 import br.dev.schirmer.thinkon.domain.exceptions.Notification;
+import br.dev.schirmer.thinkon.domain.exceptions.NotificationException;
 import br.dev.schirmer.thinkon.domain.valueobjects.Email;
 import br.dev.schirmer.thinkon.domain.valueobjects.Name;
 import br.dev.schirmer.thinkon.domain.valueobjects.PhoneNumber;
@@ -55,22 +56,22 @@ public class User {
         return firstName.value() + " " + lastName.value();
     }
 
-    public ValidEntity.Insertable<User> getInsertable() throws DomainNotificationException {
+    public ValidEntity.Insertable<User> getInsertable() throws NotificationException {
         checkAndThrow();
         return new ValidEntity.Insertable<>(this);
     }
 
-    public ValidEntity.Updatable<User> getUpdatable() throws DomainNotificationException {
+    public ValidEntity.Updatable<User> getUpdatable() throws NotificationException {
         checkAndThrow();
         return new ValidEntity.Updatable<>(this);
     }
 
-    public ValidEntity.Deletable<User> getDeletable() throws DomainNotificationException {
+    public ValidEntity.Deletable<User> getDeletable() throws NotificationException {
         // Rules for deleting the user.
         return new ValidEntity.Deletable<>(this);
     }
 
-    private void checkAndThrow() throws DomainNotificationException {
+    private void checkAndThrow() throws NotificationException {
         firstName.validate(true, "firstName", notifications);
         lastName.validate(true, "lastName", notifications);
         email.validate(true, "email", notifications);
